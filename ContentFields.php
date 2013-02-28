@@ -25,18 +25,23 @@ register_plugin(
   'contentfields_admin'  //main function (administration)
 );
 
-define('CONTENTFIELDDS_DATAPATH', GSDATAOTHERPATH.$contentfields_plugin_id.'/');
-define('CONTENTFIELDDS_DATASETTINGS', GSDATAOTHERPATH.$contentfields_plugin_id.'/'.'settings.xml'); // TODO: is it needed?
-define('CONTENTFIELDDS_DATAITEMSSPATH', GSDATAOTHERPATH.$contentfields_plugin_id.'/'.'field/');
-define('CONTENTFIELDDS_REQUESTPREFIX', 'contentfields_field_');
+define('CONTENTFIELDS_DATA_PATH', GSDATAOTHERPATH.$contentfields_plugin_id.'/');
+define('CONTENTFIELDS_BACKUP_PATH', GSBACKUPSPATH.$contentfields_plugin_id.'/');
+define('CONTENTFIELDS_TEMPLATE_PATH', GSPLUGINPATH.$contentfields_plugin_id.'/template/');
+define('CONTENTFIELDS_TEMPLATE_URL', $SITEURL.'plugins/'.$contentfields_plugin_id.'/template/');
+define('CONTENTFIELDS_DATA_SETTINGS', CONTENTFIELDS_DATA_PATH.'settings.xml'); // TODO: is it needed?
+define('CONTENTFIELDS_BACKUP_SETTINGS', CONTENTFIELDS_BACKUP_PATH.'settings.xml');
+define('CONTENTFIELDS_DATAITEM_PATH', CONTENTFIELDS_DATA_PATH.'field/');
+define('CONTENTFIELDS_BACKUP_FILE', CONTENTFIELDS_BACKUP_PATH.'field.xml');
+define('CONTENTFIELDS_REQUEST_PREFIX', 'contentfields_field_');
 
 if (!is_frontend()) {
     i18n_merge($contentfields_plugin_id, substr($LANG,0,2)); 
 }
 
 include(GSPLUGINPATH.$contentfields_plugin_id.'/ContentFields.php');
-ContentFields::set_plugin_id($lists_plugin_id);
-ContentFields::set_plugin_info($plugin_info[$lists_plugin_id]);
+ContentFields::set_plugin_id($contentfields_plugin_id);
+ContentFields::set_plugin_info($plugin_info[$contentfields_plugin_id]);
 ContentFields::initialize();
 
 i18n_merge($contentfields_plugin_id) || i18n_merge($contentfields_plugin_id, 'en_US');

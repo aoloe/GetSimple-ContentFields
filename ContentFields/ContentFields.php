@@ -23,8 +23,25 @@ class ContentFields {
         $this->message = $message;
     }
 
+    public static function initialize() {
+        if (!class_exists('Entity'))
+            include(GSPLUGINPATH.ContentFields::get_plugin_id().'/Entity.php');
+        if (!class_exists('ContentFields_item_list'))
+            include(GSPLUGINPATH.ContentFields::get_plugin_id().'/ContentFields_item_list.php');
+        if (!class_exists('ContentFields_item_entity'))
+            include(GSPLUGINPATH.ContentFields::get_plugin_id().'/ContentFields_item_entity.php');
+        /*
+        include(GSPLUGINPATH.self::$plugin_id.'/Lists_message.php');
+        include(GSPLUGINPATH.self::$plugin_id.'/Lists_storage.php');
+        self::$storage = new Lists_storage();
+        include(GSPLUGINPATH.self::$plugin_id.'/Lists_settings.php');
+        self::$settings = Lists_settings::get_instance();
+        self::$settings->read();
+        */
+    }
+
     private function get_filename($id) {
-        return CONTENTFIELDDS_DATAITEMSSPATH.$id.'.xml';
+        return CONTENTFIELDS_DATAITEMSSPATH.$id.'.xml';
     }
 
     /**
@@ -59,34 +76,94 @@ class ContentFields {
         }
 
     }
-    public function write($field, $file) {
-        // XXX: what to do if it can't create a backup? adding a message seems to be a better idea than failing!
-        if (!copy(GSDATAOTHERPATH . IM_CUSTOMFIELDS_FILE, GSBACKUPSPATH . 'other/' . IM_CUSTOMFIELDS_FILE)) return false;
+
+    /**
+     * @param ContentFields_item_entity $value 
+     */
+    public function write($prefix, $list = null) {
+        if (is_null($list)) {
+            $list = ContentFields_item_list::factory()->read($_REQUEST, CONTENTFIELDS_REQUEST_PREFIX);
+            debug('list', $list);
+        }
+        if (!copy(CONTENTFIELDS_DATAITEM_PATH.$file, CONTENTFIELDS_BACKUP_FILE)) {
+            $this->message->add_warning(i18n_r('CustomFields/BACKUP_FAILED'));
+        }
 
         $data = new SimpleXMLExtended('<?xml version="1.0" encoding="UTF-8"?><fields></fields>');
-        for ($i=0; isset($_POST['cf_'.$i.'_key']); $i++) {
-            if ($_POST['cf_'.$i.'_key']) {
+        foreach ($list as $key => $value) {
                 $item = $data->addChild('item');
-                $item->addChild('desc')->addCData(htmlspecialchars(stripslashes($_POST['cf_'.$i.'_key']), ENT_QUOTES));
-                $item->addChild('label')->addCData(htmlspecialchars(stripslashes($_POST['cf_'.$i.'_label']), ENT_QUOTES));
-                $item->addChild('type')->addCData(htmlspecialchars(stripslashes($_POST['cf_'.$i.'_type']), ENT_QUOTES));
-                if ($_POST['cf_'.$i.'_value']) {
-                    $item->addChild('value')->addCData(htmlspecialchars(stripslashes($_POST['cf_'.$i.'_value']), ENT_QUOTES));
-                }
+                $item->addChild('order', $value->get_order());
+                $item->addChild('name')->addCData(htmlspecialchars($value->get_name()));
+                $item->addChild('label')->addCData(htmlspecialchars($value->get_label()));
+                $item->addChild('type')->addCData(htmlspecialchars($value->get_type()));
+                $item->addChild('value')->addCData(htmlspecialchars($value->get_value()));
+                foreach ($value->get_options() as $key => $value)
+                    $option = $item->addChild('option');
+                    $option->addChild('key')->addCData(htmlspecialchars($key));
+                    $option->addChild('value')->addCData(htmlspecialchars($value));
+                // TODO: options should be an array of key => values in the entity!
+                /*
                 if ($_POST['cf_'.$i.'_options']) {
                     $options = preg_split("/\r?\n/", rtrim(stripslashes($_POST['cf_'.$i.'_options'])));
                     foreach ($options as $option) {
                         $item->addChild('option')->addCData(htmlspecialchars($option, ENT_QUOTES));
                     }
                 }
-            }
+                */
         }
         XMLsave($data, GSDATAOTHERPATH . IM_CUSTOMFIELDS_FILE);
         return true;
     }
+    public function get_list() {
+        $result = array();
+        return $result;
+    }
+
+    public function render_admin_list() {
+        $result = '';
+        if (!class_exists('Template')) {
+            include(GSPLUGINPATH.Lists::get_plugin_id().'/Template.php');
+        }
+        /*
+        items_customfields_confline($i, $def, 'sortable');
+        $i++;
+        }
+        items_customfields_confline($i, array(), 'hidden');
+        */
+        $field_row = array();
+        $template = Template::factory();
+        $i = 0; // TODO: is there a better way?
+        foreach ($this->get_list() as $key => $value) {
+            $field_row[] = $template->clear()->
+                set('i', ++$i)->
+                set('hidden', false)->
+                set('name', $value['name'])->
+                set('label', $value['label'])->
+                set('type', $value['type'])->
+                set('options_visible', in_array($value['type'], array('dropdown', 'wysiwyg')))->
+                set('options', $value['options'])->
+                set('value', $value['value'])->
+                fetch(CONTENTFIELDS_TEMPLATE_PATH.'admin_item.php');
+        }
+        $field_row[] = $template->clear()->
+            set('i', ++$i)->
+            set('hidden', true)->
+            set('name', '')->
+            set('label', '')->
+            set('type', '')->
+            set('options_visible', false)->
+            set('options', '')->
+            set('value', '')->
+            fetch(CONTENTFIELDS_TEMPLATE_PATH.'admin_item.php');
+        $result = $template->clear()->
+            set('field_rows', implode("\n", $field_row))->
+            fetch(CONTENTFIELDS_TEMPLATE_PATH.'admin_list.php');
+        return $result;
+    }
+
     public static function get($file) {
         $result = array();
-        if(!file_exists(CONTENTFIELDDS_DATAITEMSSPATH.$file.'.xml')) {
+        if(!file_exists(CONTENTFIELDS_DATAITEMSSPATH.$file.'.xml')) {
 		}
         return $result;
     }
