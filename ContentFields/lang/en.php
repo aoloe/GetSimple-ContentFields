@@ -14,4 +14,6 @@ $i18n = array(
     'FORM_WYSIWYG_LABEL' => "WYSIWYG editor",
     'FORM_HIDDEN_LABEL' => "Hidden field",
     'FORM_UPLOADER_LABEL' => "Image Uploader",
+    'ERROR_NOWRITEITEM' => "Could not write the CustomFields item",
+    'ERROR_BACKUPFAILED' => "Backup Failed",
 );

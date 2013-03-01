@@ -11,3 +11,4 @@ Manage Form fields for the GetSimple Cms
 - Read the "Dropdown Box" options as CSV
 - Add options for the checkbox field
 - Add a (simple) way to make a field mandatory (or eventually add other filters)
+- Add a hint on the possible values for the options, different for each type.
