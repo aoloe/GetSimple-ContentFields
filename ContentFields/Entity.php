@@ -79,6 +79,7 @@ class Entity {
                 }
             }
         }
+        // echo("<pre>".print_r(debug_backtrace(), 1)."</pre>");
         debug('method is not defined',  $method, true); die();
     } // Entity::__call()
     public function read($e, $prefix = '') {

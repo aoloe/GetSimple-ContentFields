@@ -5,19 +5,20 @@ class ContentFields {
     protected $message = null;
 
     static protected $plugin_id = '';
-    public static function set_plugin_id($id) {self::$plugin_id = $id;}
-    public static function get_plugin_id() {return self::$plugin_id;}
+    static public function set_plugin_id($id) {self::$plugin_id = $id;}
+    static public function get_plugin_id() {return self::$plugin_id;}
     static protected $plugin_info = array();
-    public static function set_plugin_info(& $plugin_info) {self::$plugin_info = & $plugin_info;}
+    static public function set_plugin_info(& $plugin_info) {self::$plugin_info = & $plugin_info;}
 
-    protected static $want_css = false;
-    public static function set_want_css($want = true) {self::$want_css = $want;}
-    public static function is_want_css() {return self::$want_css;}
-
+    static protected $want_css = false;
+    static public function set_want_css($want = true) {self::$want_css = $want;}
+    static public function is_want_css() {return self::$want_css;}
     public static function load_css() {
         // <style type="text/css">
         // </style>
     }
+
+    protected $list = null;
 
     public function ContentFields($message) {
         $this->message = $message;
@@ -155,17 +156,19 @@ class ContentFields {
         $template = Template::factory();
         $i = 0; // TODO: is there a better way?
         // debug('list', $this->list);
-        foreach ($this->list->get() as $key => $value) {
-            $field_row[] = $template->clear()->
-                set('i', ++$i)->
-                set('hidden', false)->
-                set('name', $value->get_name())->
-                set('label', $value->get_label())->
-                set('type', $value->get_type())->
-                set('options_visible', in_array($value->get_type(), array('dropdown', 'wysiwyg')))->
-                set('options', $value->get_options_as_csv())->
-                set('value', $value->get_value())->
-                fetch(CONTENTFIELDS_TEMPLATE_PATH.'admin_item.php');
+        if (isset($this->list)) {
+            foreach ($this->list->get() as $key => $value) {
+                $field_row[] = $template->clear()->
+                    set('i', ++$i)->
+                    set('hidden', false)->
+                    set('name', $value->get_name())->
+                    set('label', $value->get_label())->
+                    set('type', $value->get_type())->
+                    set('options_visible', in_array($value->get_type(), array('dropdown', 'wysiwyg')))->
+                    set('options', $value->get_options_as_csv())->
+                    set('value', $value->get_value())->
+                    fetch(CONTENTFIELDS_TEMPLATE_PATH.'admin_item.php');
+            }
         }
         $field_row[] = $template->clear()->
             set('i', ++$i)->
