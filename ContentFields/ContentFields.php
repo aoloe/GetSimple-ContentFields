@@ -30,7 +30,7 @@ class ContentFields {
         if (!class_exists('ContentFields_item_list'))
             include(CONTENTFIELDS_PLUGIN_PATH.'ContentFields_item_list.php');
         if (!class_exists('ContentFields_item_entity'))
-            include(CONTENTFIELDS_PLUGIN_PATH).'ContentFields_item_entity.php');
+            include(CONTENTFIELDS_PLUGIN_PATH.'ContentFields_item_entity.php');
         /*
         include(CONTENTFIELDS_PLUGIN_PATH.'Lists_message.php');
         include(CONTENTFIELDS_PLUGIN_PATH.'Lists_storage.php');
