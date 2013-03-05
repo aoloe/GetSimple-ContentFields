@@ -25,9 +25,10 @@ register_plugin(
   'contentfields_admin'  //main function (administration)
 );
 
+define('CONTENTFIELDS_PLUGIN_PATH', GSPLUGINPATH.$contentfields_plugin_id.'/');
 define('CONTENTFIELDS_DATA_PATH', GSDATAOTHERPATH.$contentfields_plugin_id.'/');
 define('CONTENTFIELDS_BACKUP_PATH', GSBACKUPSPATH.'other/'.$contentfields_plugin_id.'/');
-define('CONTENTFIELDS_TEMPLATE_PATH', GSPLUGINPATH.$contentfields_plugin_id.'/template/');
+define('CONTENTFIELDS_TEMPLATE_PATH', CONTENTFIELDS_PLUGIN_PATH.'template/');
 define('CONTENTFIELDS_TEMPLATE_URL', $SITEURL.'plugins/'.$contentfields_plugin_id.'/template/');
 define('CONTENTFIELDS_DATA_SETTINGS', CONTENTFIELDS_DATA_PATH.'settings.xml'); // TODO: is it needed?
 define('CONTENTFIELDS_BACKUP_SETTINGS', CONTENTFIELDS_BACKUP_PATH.'settings.xml');
@@ -39,7 +40,7 @@ if (!is_frontend()) {
     i18n_merge($contentfields_plugin_id, substr($LANG,0,2)); 
 }
 
-include(GSPLUGINPATH.$contentfields_plugin_id.'/ContentFields.php');
+include(CONTENTFIELDS_PLUGIN_PATH.'ContentFields.php');
 ContentFields::set_plugin_id($contentfields_plugin_id);
 ContentFields::set_plugin_info($plugin_info[$contentfields_plugin_id]);
 ContentFields::initialize();

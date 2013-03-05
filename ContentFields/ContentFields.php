@@ -26,16 +26,16 @@ class ContentFields {
 
     public static function initialize() {
         if (!class_exists('Entity'))
-            include(GSPLUGINPATH.ContentFields::get_plugin_id().'/Entity.php');
+            include(CONTENTFIELDS_PLUGIN_PATH.'Entity.php');
         if (!class_exists('ContentFields_item_list'))
-            include(GSPLUGINPATH.ContentFields::get_plugin_id().'/ContentFields_item_list.php');
+            include(CONTENTFIELDS_PLUGIN_PATH.'ContentFields_item_list.php');
         if (!class_exists('ContentFields_item_entity'))
-            include(GSPLUGINPATH.ContentFields::get_plugin_id().'/ContentFields_item_entity.php');
+            include(CONTENTFIELDS_PLUGIN_PATH).'ContentFields_item_entity.php');
         /*
-        include(GSPLUGINPATH.self::$plugin_id.'/Lists_message.php');
-        include(GSPLUGINPATH.self::$plugin_id.'/Lists_storage.php');
+        include(CONTENTFIELDS_PLUGIN_PATH.'Lists_message.php');
+        include(CONTENTFIELDS_PLUGIN_PATH.'Lists_storage.php');
         self::$storage = new Lists_storage();
-        include(GSPLUGINPATH.self::$plugin_id.'/Lists_settings.php');
+        include(CONTENTFIELDS_PLUGIN_PATH.'Lists_settings.php');
         self::$settings = Lists_settings::get_instance();
         self::$settings->read();
         */
@@ -144,7 +144,7 @@ class ContentFields {
     public function render_admin_list() {
         $result = '';
         if (!class_exists('Template')) {
-            include(GSPLUGINPATH.Lists::get_plugin_id().'/Template.php');
+            include(CONTENTFIELDS_PLUGIN_PATH.'Template.php');
         }
         /*
         items_customfields_confline($i, $def, 'sortable');
