@@ -7,8 +7,8 @@
                       <option value="<?= $item ?>"<?= ($type == $item ? ' selected="selected"' : ''); ?> ><?php i18n('ContentFields/FORM_'.strtoupper($item).'_LABEL'); ?></option>
                   <?php endforeach; ?>
                   </select>
-                  <textarea class="text" style="width:170px;height:50px;padding:2px;<?= $options_visible ? '' : 'display:none' ?>" name="<?= CONTENTFIELDS_REQUEST_PREFIX.$i ?>_options"><?= $options ?></textarea>
+                  <textarea class="text" style="width:170px;height:50px;padding:2px;<?= $options_visible ? '' : 'display:none' ?>" name="<?= CONTENTFIELDS_REQUEST_PREFIX.$i ?>_options"><?= (!empty($options) && ($options[0] == "\n") ? "\n" : '') // hack: otherwise, the textarea eats up the first empty line (ale/20130310) ?><?= $options ?></textarea>
               </td>
-              <td><input type="text" class="text" style="width:100px;padding:2px;" name="<?= CONTENTFIELDS_REQUEST_PREFIX.$i ?>_value" value="<?= $value ?>"/></td>
+              <td><input type="text" class="text" style="width:100px;padding:2px;" name="<?= CONTENTFIELDS_REQUEST_PREFIX.$i ?>_default_value" value="<?= $default_value ?>"/></td>
               <td class="delete"><a href="#" class="delete" title="<?php i18n('ContentFields/FORM_DELETE'); ?>">X</a></td>
           </tr>

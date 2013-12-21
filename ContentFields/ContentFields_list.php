@@ -1,10 +1,10 @@
 <?php
 
-class ContentFields_item_list {
+class ContentFields_list {
     protected $list = array();
 
     static public function factory() {
-        return new ContentFields_item_list();
+        return new ContentFields_list();
     }
 
     public function get() {
@@ -24,7 +24,8 @@ class ContentFields_item_list {
         $i = 0;
         // debug('key', CONTENTFIELDS_REQUEST_PREFIX.$i.'_name');
         for ($i = 0; array_key_exists(CONTENTFIELDS_REQUEST_PREFIX.$i.'_name', $_REQUEST); $i++) {
-            $entity = ContentFields_item_entity::factory()->read($_REQUEST, CONTENTFIELDS_REQUEST_PREFIX.$i.'_');
+            $entity = ContentFields_entity::factory()->read($_REQUEST, CONTENTFIELDS_REQUEST_PREFIX.$i.'_');
+            // debug('entity', $entity);
             if (!$entity->is_name('')) {
                 $entity->set_order($i);
                 $this->list[] = $entity;

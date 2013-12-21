@@ -36,7 +36,7 @@
     $('select[name$=_type]').change(function(e) {
       var val = $(e.target).val();
       var $ta = $(e.target).closest('td').find('textarea');
-      if ((val == 'dropdown') || (val == 'wysiwyg')) $ta.css('display','inline'); else $ta.css('display','none');
+      if ((val == 'dropdown') || (val == 'wysiwyg') || (val == 'checkbox')) $ta.css('display','inline'); else $ta.css('display','none');
     });
     $('a.delete').click(function(e) {
       $(e.target).closest('tr').remove();

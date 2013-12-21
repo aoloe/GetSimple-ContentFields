@@ -1,6 +1,8 @@
 <?php
 $i18n = array(
     'TITLE_LISTS_SETTINGS' => "Lists",
+    'FORM_LABEL_SAVE' => "Save",
+    'FORM_LABEL_DELETE' => "Delete",
     'FORM_COLUMN_NAME' => "Name",
     'FORM_COLUMN_LABEL' => "Label",
     'FORM_COLUMN_TYPE' => "Type",
@@ -16,4 +18,5 @@ $i18n = array(
     'FORM_UPLOADER_LABEL' => "Image Uploader",
     'ERROR_NOWRITEITEM' => "Could not write the CustomFields item",
     'ERROR_BACKUPFAILED' => "Backup Failed",
+    'FORM_OPTION_NOVALUE' => "No value",
 );

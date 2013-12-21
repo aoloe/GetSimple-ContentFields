@@ -1,3 +1,7 @@
+/* 
+ * TODO: check which one are really useful
+ * TODO: rename the styles and make them unique to contentfields (or relative to an id)
+ */
 form #metadata_window table.formtable td .cke_editor td:first-child { padding: 0; }
 form #metadata_window table.formtable .cke_editor td.cke_top { border-bottom: 1px solid #AAAAAA; }
 form #metadata_window table.formtable .cke_editor td.cke_contents { border: 1px solid #AAAAAA; }
@@ -16,4 +20,12 @@ border:0px;border-bottom:0px !important;border-bottom-width:0px !important;paddi
 }
 .resize_img {
     max-height:150px;
+}
+
+textarea.content_fields_edit {
+    width:635px !important; 
+    line-height:18px;
+    text-align:left;
+    color:#333;
+    border:1px solid #aaa;
 }
